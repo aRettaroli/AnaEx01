@@ -16,37 +16,32 @@
  This example shows the usage of histogram and tuple manipulations using 
  G4Analysis system. 
  
- The example is an adaptation of examples/novice/N03. It describes a simple 
- sampling calorimeter setup.
+
+ The example is further modified to simulate a very simple cloud chamber, for
+ didactic aims.
 	
 ## Detector description ##
  
- The calorimeter is a box made of a given number of layers. A layer
- consists of an absorber plate and of a detection gap. The layer is
- replicated.
+ The chamber is a 40cmx40cmx80cm parallelepiped made of a supersaturated gas. This can be either
+ water vapour or alcohol.
  	
- Six parameters define the calorimeter :
-    * the material of the absorber,
-    * the thickness of an absorber plate,
-    * the material of the detection gap,
-    * the thickness of a  gap,
-    * the number of layers,
-    * the transverse size of the calorimeter (the input face is a square). 
+ Two parameters define the calorimeter :
+    * the material of vapour,
+    * the height in the y direction (the x height is equal to that of y, and the dimension
+      in the z direction is fixed at 80cm). 
  
  The default geometry is constructed in DetectorConstruction class,
  but all of the above parameters can be modified interactively via
  the commands defined in the DetectorMessenger class.
 
 ```
-        |<----layer 0---------->|<----layer 1---------->|<----layer 2---------->|
-        |                       |                       |                       |
-        ==========================================================================
-        ||              |       ||              |       ||              |       ||
-        ||              |       ||              |       ||              |       ||
- beam   ||   absorber   |  gap  ||   absorber   |  gap  ||   absorber   |  gap  ||
-======> ||              |       ||              |       ||              |       ||
-        ||              |       ||              |       ||              |       ||
-        ==========================================================================
+                  80 cm
+        ============================
+        |		 	    |
+        |			    | 40 cm
+	|			    |
+	|			    |
+	============================
 ```   
    
  ## Physics list ##
@@ -77,14 +72,12 @@
 
  ## Histograms ##
 
- AnaEx01 can produce 4 histograms :
+ ClouChamber can produce 4 histograms : //(CAMBIARE)
   
-  EAbs : total energy deposit in absorber per event
-  EGap : total energy deposit in gap per event	  
-  LAbs : total track length of charged particles in absorber per event 	
-  LGap : total track length of charged particles in gap per event 
+  Edep : total energy deposit in the chamber per event	  
+  Ltrack : total track length of charged particles in the chamber per event
  
- And 2 Ntuples :
+ And 2 Ntuples : //(CAMBIARE)
  * Ntuple1:
    ..* one row per event : EnergyAbs EnergyGap
  * Ntuple2:
@@ -94,7 +87,7 @@
  EventAction.
  
  One can control the name of the histograms file and its format:
- default name     : AnaEx01   
+ default name     : CloudChamber   
  The format of the histogram file can be : root (default),
  xml, csv. Include correct g4nnn.hh in HistoManager.hh 
  
@@ -102,5 +95,5 @@
 
  mkdir <build dir>
  cd <build dir>
- cmake ../AnaEx01
- make
+ cmake ../
+ make -j<Nprocessors>
