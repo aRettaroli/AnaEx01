@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(AnaEx01)
+project(CloudChamber)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -31,21 +31,21 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(AnaEx01 AnaEx01.cc 
+add_executable(CloudChamber CloudChamber.cc 
                ${sources} ${add_sources} 
                ${headers} ${add_headers})
-target_link_libraries(AnaEx01 ${Geant4_LIBRARIES})
+target_link_libraries(CloudChamber ${Geant4_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build AnaEx01. This is so that we can run the executable directly because it
+# build CloudChamber. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(AnaEx01_SCRIPTS
-    AnaEx01.in run.mac init_vis.mac vis.mac gamma.mac cosmicMuons.mac
+set(CloudChamber_SCRIPTS
+    CloudChamber.in run.mac init_vis.mac vis.mac gamma.mac cosmicMuons.mac
   )
 
-foreach(_script ${AnaEx01_SCRIPTS})
+foreach(_script ${CloudChamber_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -56,5 +56,5 @@ endforeach()
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS AnaEx01 DESTINATION bin)
+install(TARGETS CloudChamber DESTINATION bin)
 
