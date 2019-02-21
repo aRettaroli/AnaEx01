@@ -54,15 +54,17 @@ public:
   virtual void  BeginOfEventAction(const G4Event*);
   virtual void    EndOfEventAction(const G4Event*);
     
-  void AddAbs(G4double de, G4double dl) {fEnergyAbs += de; fTrackLAbs += dl;};
-  void AddGap(G4double de, G4double dl) {fEnergyGap += de; fTrackLGap += dl;};
+//  void AddAbs(G4double de, G4double dl) {fEnergyAbs += de; fTrackLAbs += dl;};
+//  void AddGap(G4double de, G4double dl) {fEnergyGap += de; fTrackLGap += dl;};
+  void AddGas(G4double de, G4double dl) {fEnergyGas += de; fTrackLGas += dl;};
     
 private:
    RunAction*    fRunAct;
    HistoManager* fHistoManager;
       
-   G4double  fEnergyAbs, fEnergyGap;
-   G4double  fTrackLAbs, fTrackLGap;
+//   G4double  fEnergyAbs, fEnergyGap;
+//   G4double  fTrackLAbs, fTrackLGap;
+   G4double fEnergyGas, fTrackLGas;
                      
    G4int     fPrintModulo;                             
 };
