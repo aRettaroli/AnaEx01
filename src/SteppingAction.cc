@@ -68,8 +68,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   if (aStep->GetTrack()->GetDefinition()->GetPDGCharge() != 0.)
     stepl = aStep->GetStepLength();
       
-  if (volume == fDetector->GetAbsorber()) fEventAction->AddAbs(edep,stepl);
-  if (volume == fDetector->GetGap())      fEventAction->AddGap(edep,stepl);
+//  if (volume == fDetector->GetAbsorber()) fEventAction->AddAbs(edep,stepl);
+//  if (volume == fDetector->GetGap())      fEventAction->AddGap(edep,stepl);
+  if (volume == fDetector->GetGasVolume()) fEventAction->AddGas(edep,stepl);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
