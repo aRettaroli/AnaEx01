@@ -44,10 +44,12 @@
 RunAction::RunAction(HistoManager* histo)
 : G4UserRunAction(),
   fHistoManager(histo),
-  fSumEAbs(0.), fSum2EAbs(0.),
-  fSumEGap(0.), fSum2EGap(0.),
-  fSumLAbs(0.), fSum2LAbs(0.),
-  fSumLGap(0.), fSum2LGap(0.)    
+//  fSumEAbs(0.), fSum2EAbs(0.),
+//  fSumEGap(0.), fSum2EGap(0.),
+//  fSumLAbs(0.), fSum2LAbs(0.),
+//  fSumLGap(0.), fSum2LGap(0.) 
+  fSumEGas(0.), fSum2EGas(0.),
+  fSumLGas(0.), fSum2LGas(0.),   
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -63,8 +65,10 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
     
   //initialize cumulative quantities
   //
-  fSumEAbs = fSum2EAbs =fSumEGap = fSum2EGap = 0.;
-  fSumLAbs = fSum2LAbs =fSumLGap = fSum2LGap = 0.;
+//  fSumEAbs = fSum2EAbs =fSumEGap = fSum2EGap = 0.;
+//  fSumLAbs = fSum2LAbs =fSumLGap = fSum2LGap = 0.;
+  fSumEGas = fSum2EGas = 0.;
+  fSumLGas = fSum2LGas = 0.;
   
   //histograms
   //
@@ -73,16 +77,23 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void RunAction::FillPerEvent(G4double EAbs, G4double EGap,
-                                  G4double LAbs, G4double LGap)
+//void RunAction::FillPerEvent(G4double EAbs, G4double EGap,
+//                                  G4double LAbs, G4double LGap)
+//{
+//  //accumulate statistic
+//  //
+//  fSumEAbs += EAbs;  fSum2EAbs += EAbs*EAbs;
+//  fSumEGap += EGap;  fSum2EGap += EGap*EGap;
+//  
+//  fSumLAbs += LAbs;  fSum2LAbs += LAbs*LAbs;
+//  fSumLGap += LGap;  fSum2LGap += LGap*LGap;  
+//}
+void RunAction::FillPerEvent(G4double Egas, G4double LGas)
 {
   //accumulate statistic
-  //
-  fSumEAbs += EAbs;  fSum2EAbs += EAbs*EAbs;
-  fSumEGap += EGap;  fSum2EGap += EGap*EGap;
+  fSumEGas += EGas;  fSum2EGas += EGas*EGas;
   
-  fSumLAbs += LAbs;  fSum2LAbs += LAbs*LAbs;
-  fSumLGap += LGap;  fSum2LGap += LGap*LGap;  
+  fSumLGas += LGas;  fSum2LGas += LGas*LGas;  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -94,37 +105,44 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
   
   //compute statistics: mean and rms
   //
-  fSumEAbs /= NbOfEvents; fSum2EAbs /= NbOfEvents;
-  G4double rmsEAbs = fSum2EAbs - fSumEAbs*fSumEAbs;
-  if (rmsEAbs >0.) rmsEAbs = std::sqrt(rmsEAbs); else rmsEAbs = 0.;
+//  fSumEAbs /= NbOfEvents; fSum2EAbs /= NbOfEvents;
+//  G4double rmsEAbs = fSum2EAbs - fSumEAbs*fSumEAbs;
+//  if (rmsEAbs >0.) rmsEAbs = std::sqrt(rmsEAbs); else rmsEAbs = 0.;
+//  
+//  fSumEGap /= NbOfEvents; fSum2EGap /= NbOfEvents;
+//  G4double rmsEGap = fSum2EGap - fSumEGap*fSumEGap;
+//  if (rmsEGap >0.) rmsEGap = std::sqrt(rmsEGap); else rmsEGap = 0.;
+//  
+//  fSumLAbs /= NbOfEvents; fSum2LAbs /= NbOfEvents;
+//  G4double rmsLAbs = fSum2LAbs - fSumLAbs*fSumLAbs;
+//  if (rmsLAbs >0.) rmsLAbs = std::sqrt(rmsLAbs); else rmsLAbs = 0.;
+//  
+//  fSumLGap /= NbOfEvents; fSum2LGap /= NbOfEvents;
+//  G4double rmsLGap = fSum2LGap - fSumLGap*fSumLGap;
+//  if (rmsLGap >0.) rmsLGap = std::sqrt(rmsLGap); else rmsLGap = 0.;
+  fSumEGas /= NbOfEvents; fSum2EGas /= NbOfEvents;
+  G4double rmsEGas = fSum2EGas - fSumEGas*fSumEGas;
+  if (rmsEGas >0.) rmsEGas = std::sqrt(rmsEGas); else rmsEGas = 0.;
   
-  fSumEGap /= NbOfEvents; fSum2EGap /= NbOfEvents;
-  G4double rmsEGap = fSum2EGap - fSumEGap*fSumEGap;
-  if (rmsEGap >0.) rmsEGap = std::sqrt(rmsEGap); else rmsEGap = 0.;
-  
-  fSumLAbs /= NbOfEvents; fSum2LAbs /= NbOfEvents;
-  G4double rmsLAbs = fSum2LAbs - fSumLAbs*fSumLAbs;
-  if (rmsLAbs >0.) rmsLAbs = std::sqrt(rmsLAbs); else rmsLAbs = 0.;
-  
-  fSumLGap /= NbOfEvents; fSum2LGap /= NbOfEvents;
-  G4double rmsLGap = fSum2LGap - fSumLGap*fSumLGap;
-  if (rmsLGap >0.) rmsLGap = std::sqrt(rmsLGap); else rmsLGap = 0.;
+  fSumLGas /= NbOfEvents; fSum2LGas /= NbOfEvents;
+  G4double rmsLGas = fSum2LGas - fSumLGas*fSumLGas;
+  if (rmsLGas >0.) rmsLGas = std::sqrt(rmsLGas); else rmsLGas = 0.;
   
   //print
   //
   G4cout
      << "\n--------------------End of Run------------------------------\n"
-     << "\n mean Energy in Absorber : " << G4BestUnit(fSumEAbs,"Energy")
-     << " +- "                          << G4BestUnit(rmsEAbs,"Energy")  
-     << "\n mean Energy in Gap      : " << G4BestUnit(fSumEGap,"Energy")
-     << " +- "                          << G4BestUnit(rmsEGap,"Energy")
+//     << "\n mean Energy in Absorber : " << G4BestUnit(fSumEAbs,"Energy")
+//     << " +- "                          << G4BestUnit(rmsEAbs,"Energy")  
+     << "\n mean Energy in Gas      : " << G4BestUnit(fSumEGas,"Energy")
+     << " +- "                          << G4BestUnit(rmsEGas,"Energy")
      << G4endl;
      
   G4cout
-     << "\n mean trackLength in Absorber : " << G4BestUnit(fSumLAbs,"Length")
-     << " +- "                               << G4BestUnit(rmsLAbs,"Length")  
-     << "\n mean trackLength in Gap      : " << G4BestUnit(fSumLGap,"Length")
-     << " +- "                               << G4BestUnit(rmsLGap,"Length")
+//     << "\n mean trackLength in Absorber : " << G4BestUnit(fSumLAbs,"Length")
+//     << " +- "                               << G4BestUnit(rmsLAbs,"Length")  
+     << "\n mean trackLength in Gap      : " << G4BestUnit(fSumLGas,"Length")
+     << " +- "                               << G4BestUnit(rmsLGas,"Length")
      << "\n------------------------------------------------------------\n"
      << G4endl;
      
