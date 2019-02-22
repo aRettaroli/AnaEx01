@@ -78,7 +78,8 @@ void EventAction::EndOfEventAction(const G4Event*)
 {
   //accumulates statistic
   //
-  fRunAct->FillPerEvent(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
+//  fRunAct->FillPerEvent(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
+  fRunAct->FillPerEvent(fEnergyGas, fTrackLGas);
   
   //fill histograms
   //
@@ -91,7 +92,8 @@ void EventAction::EndOfEventAction(const G4Event*)
   
   //fill ntuple
   //
-  fHistoManager->FillNtuple(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
+//  fHistoManager->FillNtuple(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
+  fHistoManager->FillNtuple(fEnergyGas, fTrackLGas);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
