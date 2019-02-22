@@ -12,13 +12,13 @@
 /gps/verbose 0
 
 /gps/particle mu- 
-/gps/position 0 10 0 cm
+/gps/position 0 40 0 cm
 
 /gps/pos/type Plane
 /gps/pos/shape Rectangle
-/gps/pos/centre 0 10 0 cm
-/gps/pos/halfx 10 cm
-/gps/pos/halfy 10 cm
+/gps/pos/centre 0 40 0 cm
+/gps/pos/halfx 80 cm
+/gps/pos/halfy 40 cm
 
 #angular distribution
 /gps/ang/type user
