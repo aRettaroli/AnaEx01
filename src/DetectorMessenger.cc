@@ -56,7 +56,7 @@ DetectorMessenger::DetectorMessenger( DetectorConstruction* Det)
 // fGapMaterCmd(0),
 // fAbsThickCmd(0),
 // fGapThickCmd(0),
- fSizeYZCmd(0),
+ fSizeYZCmd(0)
 // fNbLayersCmd(0)    
 { 
   fN03Dir = new G4UIdirectory("/N03/");

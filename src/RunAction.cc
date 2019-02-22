@@ -49,7 +49,7 @@ RunAction::RunAction(HistoManager* histo)
 //  fSumLAbs(0.), fSum2LAbs(0.),
 //  fSumLGap(0.), fSum2LGap(0.) 
   fSumEGas(0.), fSum2EGas(0.),
-  fSumLGas(0.), fSum2LGas(0.),   
+  fSumLGas(0.), fSum2LGas(0.) 
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -88,7 +88,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
 //  fSumLAbs += LAbs;  fSum2LAbs += LAbs*LAbs;
 //  fSumLGap += LGap;  fSum2LGap += LGap*LGap;  
 //}
-void RunAction::FillPerEvent(G4double Egas, G4double LGas)
+void RunAction::FillPerEvent(G4double EGas, G4double LGas)
 {
   //accumulate statistic
   fSumEGas += EGas;  fSum2EGas += EGas*EGas;
@@ -141,7 +141,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
   G4cout
 //     << "\n mean trackLength in Absorber : " << G4BestUnit(fSumLAbs,"Length")
 //     << " +- "                               << G4BestUnit(rmsLAbs,"Length")  
-     << "\n mean trackLength in Gap      : " << G4BestUnit(fSumLGas,"Length")
+     << "\n mean trackLength in Gas      : " << G4BestUnit(fSumLGas,"Length")
      << " +- "                               << G4BestUnit(rmsLGas,"Length")
      << "\n------------------------------------------------------------\n"
      << G4endl;

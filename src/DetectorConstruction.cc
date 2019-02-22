@@ -85,7 +85,7 @@ DetectorConstruction::DetectorConstruction()
   DefineMaterials();
 //  SetAbsorberMaterial("G4_Pb");
 //  SetGapMaterial("G4_lAr");
-  SetGaSMaterial("G4_WATER_VAPOR");
+  SetGasMaterial("G4_WATER_VAPOR");
 	
   // create commands for interactive definition of the chamber
   fDetectorMessenger = new DetectorMessenger(this);
@@ -208,7 +208,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructChamber()
 void DetectorConstruction::PrintChamberParameters()
 {
 	G4cout << "\n------------------------------------------------------------"
-	<< "\n---> The chamber is mad of: [ "
+	<< "\n---> The chamber is made of: [ "
 	<< fChamberThickness/mm << "mm of " << fGasMaterial->GetName()
 	<< " ] "
 	<< "\n------------------------------------------------------------\n";
