@@ -83,12 +83,12 @@ void HistoManager::Book()
 //  analysisManager->CreateH1("EAbs","Edep in absorber (MeV)", 100, 0., 800*MeV);
   // id = 1
 //  analysisManager->CreateH1("EGap","Edep in gap (MeV)", 100, 0., 100*MeV);
-  analysisManager->CreateH1("EGas","Edep in chamber (MeV)", 100, 0., 100*MeV);
+  analysisManager->CreateH1("EGas","Edep in chamber (MeV)", 50, 0., 1*MeV);
   // id = 2
 //  analysisManager->CreateH1("LAbs","trackL in absorber (mm)", 100, 0., 1*m);
   // id = 3
 //  analysisManager->CreateH1("LGap","trackL in gap (mm)", 100, 0., 50*cm);
-  analysisManager->CreateH1("LGas","trackL in chamber (mm)", 100, 0., 1*m);
+  analysisManager->CreateH1("LGas","trackL in chamber (mm)", 50, 0., 1*m);
 
   // Create ntuples.
   // Ntuples ids are generated automatically starting from 0.
@@ -99,14 +99,15 @@ void HistoManager::Book()
   analysisManager->CreateNtuple("Ntuple1", "Edep");
   analysisManager->CreateNtupleDColumn("Egas"); // column Id = 0
 //  analysisManager->CreateNtupleDColumn("Egap"); // column Id = 1
+  analysisManager->CreateNtupleDColumn("Lgas"); // column Id = 1
   analysisManager->FinishNtuple();
 
   // Create 2nd ntuple (id = 1)
   //    
-  analysisManager->CreateNtuple("Ntuple2", "TrackL");
-  analysisManager->CreateNtupleDColumn("Lgas"); // column Id = 0
+//  analysisManager->CreateNtuple("Ntuple2", "TrackL");
+//  analysisManager->CreateNtupleDColumn("Lgas"); // column Id = 0
 //  analysisManager->CreateNtupleDColumn("Lgap"); // column Id = 1
-  analysisManager->FinishNtuple();
+//  analysisManager->FinishNtuple();
   
   fFactoryOn = true;       
 
@@ -178,10 +179,11 @@ void HistoManager::FillNtuple(G4double energydep, G4double tracklen)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Fill 1st ntuple ( id = 0)
   analysisManager->FillNtupleDColumn(0, 0, energydep);
+  analysisManager->FillNtupleDColumn(0, 1, tracklen);
   analysisManager->AddNtupleRow(0);  
   // Fill 2nd ntuple ( id = 1)
-  analysisManager->FillNtupleDColumn(1, 0, tracklen);
-  analysisManager->AddNtupleRow(1);  
+//  analysisManager->FillNtupleDColumn(1, 0, tracklen);
+//  analysisManager->AddNtupleRow(1);  
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

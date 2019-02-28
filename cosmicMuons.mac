@@ -6,7 +6,7 @@
 /control/saveHistory
 /run/verbose 1
 #
-#/run/initialize
+/run/initialize
 #
 
 /gps/verbose 0
