@@ -85,7 +85,8 @@ DetectorConstruction::DetectorConstruction()
   DefineMaterials();
 //  SetAbsorberMaterial("G4_Pb");
 //  SetGapMaterial("G4_lAr");
-  SetGasMaterial("G4_WATER_VAPOR");
+//  SetGasMaterial("G4_WATER_VAPOR");
+  SetGasMaterial("WATER_VAPOR_SAT"); //my supersaturated vapor
 	
   // create commands for interactive definition of the chamber
   fDetectorMessenger = new DetectorMessenger(this);
@@ -114,6 +115,9 @@ void DetectorConstruction::DefineMaterials()
 //man->FindOrBuildMaterial("G4_Pb");
 //man->FindOrBuildMaterial("G4_lAr");
   man->FindOrBuildMaterial("G4_WATER_VAPOR");
+  //definition of supersaturated vapot
+  man->ConstructNewGasMaterial("WATER_VAPOR_SAT","G4_WATER_VAPOR",195*kelvin,2*bar,1);
+  
 
 // print table
 //
@@ -163,7 +167,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructChamber()
                     fChamberThickness/2,fChamberSizeYZ/2,fChamberSizeYZ/2);//size
                                  
       fLogicChamber = new G4LogicalVolume(fSolidChamber,        //its solid
-                                        fDefaultMaterial,   //its material
+                                        fGasMaterial,   //its material
                                         "Cloud chamber");     //its name
                                            
       fPhysiChamber = new G4PVPlacement(0,                    //no rotation
@@ -252,14 +256,18 @@ void DetectorConstruction::PrintChamberParameters()
 
 void DetectorConstruction::SetGasMaterial(G4String materialChoice)
 {
+
+//  G4cout << "\n \nSONO DENTRO A SETGASMATERIAL\n \n";
 	// search the material by its name
 	G4Material* pttoMaterial =
 	G4NistManager::Instance()->FindOrBuildMaterial(materialChoice);
 	if (pttoMaterial)
 	{
+//	G4cout << "\n \nSONO DENTRO A IF pttomaterial\n \n";
 		fGasMaterial = pttoMaterial;
 		if ( fLogicChamber )
 		{
+//		G4cout << "\n \nSONO DENTRO A IF flogicalchamber\n \n";
 			fLogicChamber->SetMaterial(fGasMaterial);
 			G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 		}
