@@ -39,7 +39,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 HistoManager::HistoManager(const G4bool enable)
-  : fFactoryOn(false),
+  : fFactoryOn(true),
     fEnabled(enable)
 {}
 
