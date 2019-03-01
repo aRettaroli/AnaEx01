@@ -6,6 +6,7 @@
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 
+
 #include "G4Box.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
@@ -79,17 +80,23 @@ void DetectorConstruction::DefineMaterials()
 //
   G4NistManager* man = G4NistManager::Instance();
   fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
-//man->FindOrBuildMaterial("G4_Pb");
-//man->FindOrBuildMaterial("G4_lAr");
-  man->FindOrBuildMaterial("G4_WATER_VAPOR");
+  G4Material* HYDROG = man->FindOrBuildMaterial("G4_H");
+  G4Material* CARB = man->FindOrBuildMaterial("G4_C");
+  G4Material* OXYG = man->FindOrBuildMaterial("G4_O");
+//  man->FindOrBuildMaterial("G4_WATER_VAPOR");
   G4Material* my_air = man->FindOrBuildMaterial("G4_AIR");
-  man->FindOrBuildMaterial("G4_N-PROPYL_ALCOHOL"); // 2-propanol
+//  man->FindOrBuildMaterial("G4_N-PROPYL_ALCOHOL"); // 2-propanol
+  // gaseous 2-propanol
+  G4Material* isopropyl_gas = new G4Material("G4_N-PROPYL_ALCOHOL_GAS", 0.00253006*g/cm3, 3, kStateGas);
+  isopropyl_gas->AddMaterial(HYDROG, 0.134173);
+  isopropyl_gas->AddMaterial(CARB, 0.599595);
+  isopropyl_gas->AddMaterial(OXYG, 0.266232);
   //definition of supersaturated alcohol vapor
-  G4Material* my_alcohol = man->ConstructNewGasMaterial("ALCOHOL_SAT","G4_N-PROPYL_ALCOHOL",195*kelvin,0.7*bar,1);
+  G4Material* isopropyl_gas_sat = man->ConstructNewGasMaterial("ALCOHOL_SAT","G4_N-PROPYL_ALCOHOL_GAS",195*kelvin,0.7*bar,1);
   
   //moisture of air + supersaturated alcohol vapor
-  G4Material* mycompound = new G4Material("MY_COMPOUND", 0.8*g/cm3, 2);
-  mycompound->AddMaterial(my_alcohol,0.5);
+  G4Material* mycompound = new G4Material("MY_COMPOUND", 0.002*g/cm3, 2,kStateGas);
+  mycompound->AddMaterial(isopropyl_gas_sat,0.5);
   mycompound->AddMaterial(my_air,0.5);
 
 // print table
