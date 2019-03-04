@@ -57,6 +57,8 @@ public:
 //  void AddAbs(G4double de, G4double dl) {fEnergyAbs += de; fTrackLAbs += dl;};
 //  void AddGap(G4double de, G4double dl) {fEnergyGap += de; fTrackLGap += dl;};
   void AddGas(G4double de, G4double dl) {fEnergyGas += de; fTrackLGas += dl;};
+
+  int GetCurrentEventID() {return fEvtID;};
     
 private:
    RunAction*    fRunAct;
@@ -66,6 +68,7 @@ private:
 //   G4double  fTrackLAbs, fTrackLGap;
    G4double fEnergyGas, fTrackLGas;
                      
+   G4int fEvtID;
    G4int     fPrintModulo;                             
 };
 

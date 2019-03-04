@@ -32,14 +32,16 @@ int main(int argc,char** argv)
   DetectorConstruction* detector = new DetectorConstruction;
   runManager->SetUserInitialization(detector);
   runManager->SetUserInitialization(new FTFP_BERT);
-  if(!ui)
-    {
+//  if(!ui)
+//    {
+
+      //always enable ROOT
       runManager->SetUserInitialization(new ActionInitialization(detector,true));
-    }
-  else
-    {
-      runManager->SetUserInitialization(new ActionInitialization(detector,false));
-    }
+//    }
+//  else
+//    {
+//      runManager->SetUserInitialization(new ActionInitialization(detector,false));
+//    }
 
   // Initialize visualization
   G4VisManager* visManager = new G4VisExecutive;

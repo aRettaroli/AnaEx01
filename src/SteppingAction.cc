@@ -37,6 +37,7 @@
 
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
+#include "HistoManager.hh"
 
 #include "G4Step.hh"
 
@@ -45,7 +46,7 @@
 SteppingAction::SteppingAction(DetectorConstruction* det,
                                          EventAction* evt)
 : G4UserSteppingAction(), 
-  fDetector(det), fEventAction(evt)                                         
+  fDetector(det), fEventAction(evt)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -70,7 +71,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
       
 //  if (volume == fDetector->GetAbsorber()) fEventAction->AddAbs(edep,stepl);
 //  if (volume == fDetector->GetGap())      fEventAction->AddGap(edep,stepl);
-  if (volume == fDetector->GetGasVolume()) fEventAction->AddGas(edep,stepl);
+  if (volume == fDetector->GetGasVolume()) {
+    HistoManager* histo = new HistoManager(true);
+    fEventAction->AddGas(edep,stepl);
+    
+    int evt = fEventAction->GetCurrentEventID();
+    G4cout << "\n\n EVENTO\n\n" << evt << G4endl;
+    histo->FillNtupleEachStep(evt,2.0,2.0,2.0,edep,stepl);
+    delete histo;
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

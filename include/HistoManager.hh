@@ -57,7 +57,8 @@ class HistoManager
 
 //    void FillNtuple(G4double EnergyAbs, G4double EnergyGap,
 //                    G4double TrackLAbs, G4double TrackLGap);
-	void FillNtuple(G4double EnergyDep, G4double TrackLen);
+    void FillNtuple(G4double EnergyDep, G4double TrackLen);
+    void FillNtupleEachStep(G4int evtid, G4double xposition, G4double yposition, G4double zposition, G4double energyStep, G4double stepsize);
     
     void PrintStatistic();        
     

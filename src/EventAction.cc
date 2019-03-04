@@ -41,6 +41,8 @@
 
 #include "G4Event.hh"
 
+#include <string>
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::EventAction(RunAction* run, HistoManager* histo)
@@ -50,7 +52,8 @@ EventAction::EventAction(RunAction* run, HistoManager* histo)
 // fTrackLAbs(0.), fTrackLGap(0.),
  fEnergyGas(0.),
  fTrackLGas(0.),
- fPrintModulo(0)                             
+ fPrintModulo(0),
+ fEvtID(0)                  
 {
  fPrintModulo = 100; }
 
@@ -63,7 +66,7 @@ EventAction::~EventAction()
 
 void EventAction::BeginOfEventAction(const G4Event* evt)
 {  
-  // G4int evtNb = evt->GetEventID();
+   fEvtID = evt->GetEventID();
  
  // initialisation per event
 // fEnergyAbs = fEnergyGap = 0.;
@@ -80,6 +83,17 @@ void EventAction::EndOfEventAction(const G4Event*)
   //
 //  fRunAct->FillPerEvent(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
   fRunAct->FillPerEvent(fEnergyGas, fTrackLGas);
+
+  //create Ntuple for each event (id = evtID + 1 )
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  std::string evtIDstring = std::to_string(fEvtID);
+  analysisManager->CreateNtuple("Ntuple"+evtIDstring, "Evt"+evtIDstring);
+  analysisManager->CreateNtupleDColumn("Xpos"); // column Id = 0
+  analysisManager->CreateNtupleDColumn("Ypos"); // column Id = 1
+  analysisManager->CreateNtupleDColumn("Zpos"); // column Id = 2
+  analysisManager->CreateNtupleDColumn("Estep"); // column Id = 3
+  analysisManager->CreateNtupleDColumn("StepSize"); // column Id = 4
+  analysisManager->FinishNtuple();
   
   //fill histograms
   //
