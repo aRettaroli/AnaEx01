@@ -108,6 +108,7 @@ void HistoManager::Book()
 //  analysisManager->CreateNtupleDColumn("Lgas"); // column Id = 0
 //  analysisManager->CreateNtupleDColumn("Lgap"); // column Id = 1
 //  analysisManager->FinishNtuple();
+
   
   fFactoryOn = true;       
 

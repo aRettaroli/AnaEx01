@@ -69,6 +69,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   if (aStep->GetTrack()->GetDefinition()->GetPDGCharge() != 0.)
     stepl = aStep->GetStepLength();
       
+      G4ThreeVector position = aStep->GetPostStepPoint()->GetPosition();
+       
 //  if (volume == fDetector->GetAbsorber()) fEventAction->AddAbs(edep,stepl);
 //  if (volume == fDetector->GetGap())      fEventAction->AddGap(edep,stepl);
   if (volume == fDetector->GetGasVolume()) {
@@ -76,8 +78,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
     fEventAction->AddGas(edep,stepl);
     
     int evt = fEventAction->GetCurrentEventID();
-    G4cout << "\n\n EVENTO\n\n" << evt << G4endl;
-    histo->FillNtupleEachStep(evt,2.0,2.0,2.0,edep,stepl);
+    histo->FillNtupleEachStep(evt,position[0],position[1],position[2],edep,stepl);
     delete histo;
     }
 }
