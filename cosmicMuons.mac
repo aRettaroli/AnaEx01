@@ -123,4 +123,5 @@
 
 #finally...
 /run/printProgress 1000
+/chamb/stepMax 1*mm
 /run/beamOn 100
