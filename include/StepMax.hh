@@ -2,41 +2,41 @@
 #define StepMax_h 1
 
 #include "globals.hh"
-#include "G4VEmProcess.hh"
+#include "G4VDiscreteProcess.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4Step.hh"
 
-class PhysicsListMessenger;
+class StepMaxMessenger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class StepMax : public G4VEmProcess
+class StepMax : public G4VDiscreteProcess
 {
-public:
+  public:
 
-  StepMax(PhysicsListMessenger* mess);
-  virtual ~StepMax();
+     StepMax(const G4String& processName = "UserMaxStep");
+    ~StepMax();
 
-  virtual G4bool IsApplicable(const G4ParticleDefinition&);
+     virtual G4bool IsApplicable(const G4ParticleDefinition&);
 
-  virtual void PreparePhysicsTable(const G4ParticleDefinition&);
+     void SetMaxStep(G4double);
 
-  virtual void BuildPhysicsTable(const G4ParticleDefinition&);
+     G4double GetMaxStep() {return fMaxChargedStep;};
 
-  virtual void InitialiseProcess(const G4ParticleDefinition*);
+     virtual G4double PostStepGetPhysicalInteractionLength(const G4Track& track,
+                                               G4double previousStepSize,
+                                               G4ForceCondition* condition);
 
-  virtual G4double PostStepGetPhysicalInteractionLength(const G4Track& track,
-                                                        G4double previousStep,
-                                                        G4ForceCondition* cond);
+     virtual G4VParticleChange* PostStepDoIt(const G4Track&, const G4Step&);
 
-  virtual G4VParticleChange* PostStepDoIt(const G4Track&, const G4Step&);
+     virtual G4double GetMeanFreePath(const G4Track&,G4double,G4ForceCondition*)
+     {return DBL_MAX;};    
 
-private:
+  private:
 
-  PhysicsListMessenger* fMessenger;
-
-  G4double fMaxChargedStep;
-  G4bool isInitialised;
+     G4double fMaxChargedStep;
+     
+     StepMaxMessenger* fMess;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

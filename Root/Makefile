@@ -1,0 +1,32 @@
+#compiler
+CXX	= g++
+
+#flags
+CXXFLAGS	= -Wall -g
+
+#Root flags and libraries
+ROOTCFLAGS 	= $(shell $(ROOTSYS)/bin/root-config --cflags)
+ROOTLIBS	= $(shell $(ROOTSYS)/bin/root-config --libs)
+ROOTGLIBS	= $(shell $(ROOTSYS)/bin/root-config --glibs)
+
+LIBS		= $(ROOTLIBS) $(ROOTGLIBS)
+FLAGS		+= $(CXXFLAGS) $(ROOTFLAGS)
+
+#include directories
+INCLUDE		= -I./ -I$(ROOTSYS)/include
+
+#----------------------------------------------------
+#default target
+default_target: main
+.PHONY: default_target
+
+
+#compiling rule
+main: CloudChamber.C
+	g++ $(FLAGS) $(LIBS) $(INCLUDE) -o mainChamb CloudChamber.C
+
+
+#clean rule
+.PHONY: clean
+clean:
+	rm -f mainChamb

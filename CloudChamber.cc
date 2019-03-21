@@ -3,6 +3,7 @@
 
 #include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
+#include "PhysicsList.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -31,7 +32,9 @@ int main(int argc,char** argv)
   // Set mandatory initialization classes
   DetectorConstruction* detector = new DetectorConstruction;
   runManager->SetUserInitialization(detector);
-  runManager->SetUserInitialization(new FTFP_BERT);
+//  runManager->SetUserInitialization(new FTFP_BERT);
+  PhysicsList* myphys = new PhysicsList(detector);
+  runManager->SetUserInitialization(myphys);
 //  if(!ui)
 //    {
 

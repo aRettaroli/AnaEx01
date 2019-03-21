@@ -4,32 +4,37 @@
 #include "G4VModularPhysicsList.hh"
 #include "globals.hh"
 
+class DetectorConstruction;
 class G4VPhysicsConstructor;
 class PhysicsListMessenger;
+class G4VProcess;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class PhysicsList: public G4VModularPhysicsList
 {
-public:
-  PhysicsList();
- ~PhysicsList();
+  public:
+    PhysicsList(DetectorConstruction*);
+   ~PhysicsList();
 
-  virtual void ConstructParticle();
-        
-  void AddPhysicsList(const G4String& name);
+    virtual void ConstructParticle();
+    virtual void ConstructProcess();
+    void AddPhysicsList(const G4String& name);
     
-  virtual void ConstructProcess();    
-  void AddStepMax();
+    void AddDecay();
+    void AddRadioactiveDecay();
+    void AddStepMax();
+
+    void GetRange(G4double);
+    G4VProcess*  GetProcess(const G4String&) const;
+
+  private:    
+    G4VPhysicsConstructor* fEmPhysicsList;
+    G4String               fEmName;
     
-private:
+    DetectorConstruction* fDet;
+    PhysicsListMessenger* fMessenger;
 
-  PhysicsListMessenger* fMessenger; 
-
-  G4String fEmName;
-  G4VPhysicsConstructor*  fEmPhysicsList;
-  G4VPhysicsConstructor*  fDecayPhysics;
-  G4VPhysicsConstructor*  fHadPhysicsList;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

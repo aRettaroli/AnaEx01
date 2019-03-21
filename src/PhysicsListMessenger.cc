@@ -1,48 +1,54 @@
+
 #include "PhysicsListMessenger.hh"
 
-//#include "PhysicsList.hh"
+#include "PhysicsList.hh"
 #include "G4UIdirectory.hh"
-#include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithAString.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-PhysicsListMessenger::PhysicsListMessenger()
-  :G4UImessenger(),fMaxChargedStep(DBL_MAX)
-{
+PhysicsListMessenger::PhysicsListMessenger(PhysicsList* pPhys)
+:G4UImessenger(),fPhysicsList(pPhys),
+ fPhysDir(0),
+ fRCmd(0),    
+ fListCmd(0)
+{ 
   fPhysDir = new G4UIdirectory("/chamb/phys/");
   fPhysDir->SetGuidance("physics list commands");
+  
+  fRCmd = new G4UIcmdWithADoubleAndUnit("/chamb/phys/getRange",this);
+  fRCmd->SetGuidance("get the electron cut for the current material.");
+  fRCmd->SetParameterName("energy",false);
+  fRCmd->SetRange("energy>0.");
+  fRCmd->SetUnitCategory("Energy");  
+  fRCmd->AvailableForStates(G4State_Idle);  
 
-//  fListCmd = new G4UIcmdWithAString("/testem/phys/addPhysics",this);  
-//  fListCmd->SetGuidance("Add modula physics list.");
-//  fListCmd->SetParameterName("PList",false);
-//  fListCmd->AvailableForStates(G4State_PreInit);
-//  fListCmd->SetToBeBroadcasted(false);      
-
-  fStepMaxCmd = new G4UIcmdWithADoubleAndUnit("/chamb/stepMax",this);
-  fStepMaxCmd->SetGuidance("Set max allowed step length");
-  fStepMaxCmd->SetParameterName("mxStep",false);
-  fStepMaxCmd->SetRange("mxStep>0.");
-  fStepMaxCmd->SetUnitCategory("Length");
-  fStepMaxCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+  fListCmd = new G4UIcmdWithAString("/chamb/phys/addPhysics",this);  
+  fListCmd->SetGuidance("Add modula physics list.");
+  fListCmd->SetParameterName("PList",false);
+  fListCmd->AvailableForStates(G4State_PreInit);  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 PhysicsListMessenger::~PhysicsListMessenger()
 {
-//  delete fListCmd;
+  delete fRCmd;
+  delete fListCmd;
   delete fPhysDir;
-  delete fStepMaxCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void PhysicsListMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
-{ 
-//  if( command == fListCmd )
-//    { fPhysicsList->AddPhysicsList(newValue); }
-  if (command == fStepMaxCmd)
-    { fMaxChargedStep = fStepMaxCmd->GetNewDoubleValue(newValue); }
+void PhysicsListMessenger::SetNewValue(G4UIcommand* command,
+                                          G4String newValue)
+{            
+  if( command == fRCmd )
+   { fPhysicsList->GetRange(fRCmd->GetNewDoubleValue(newValue));}
+    
+  if( command == fListCmd )
+   { fPhysicsList->AddPhysicsList(newValue);}
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
