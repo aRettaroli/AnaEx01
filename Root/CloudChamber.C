@@ -9,7 +9,12 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TApplication.h>
+#include <cstdlib>
+#include <cmath>
 using namespace std;
+
+double mydist(double,double);
+
 
 int main() {
 
@@ -18,7 +23,7 @@ int main() {
   TFile* myf = new TFile("../build/CloudChamber.root","r");
   TDirectoryFile* dir = (TDirectoryFile*)myf->Get("ntuple");
 
-  TH2D* edep = new TH2D("EvsY","Edep vs Y coord",40,-200.,200.,40,0.,0.03); //E in MeV, Y in mm
+  TH2D* edep = new TH2D("EvsY","Edep vs Y coord",40,-200.,200.,40,0.,0.02); //E in MeV, Y in mm
  
   int nEvt = 100;
   TTree* tree;
@@ -44,7 +49,11 @@ int main() {
       tree->GetEntry(i);
       double y0 = -200.; //mm
       E_new = E*TMath::Exp(-(y-y0)/TMath::Abs(y0));
-      edep->Fill(y,E_new);
+      
+      double r = (double)rand()/RAND_MAX;
+      double myrandom = mydist(y,y0);
+      
+      if(r<myrandom) { edep->Fill(y,E_new); }
      
     }
 
@@ -59,10 +68,21 @@ int main() {
   
   myf->Close();
   
+  
 //###############################
 
   delete myf;
 //  delete edep;
 
   return 0;
+}
+
+
+//function mydist
+double mydist(double x, double x0) {
+
+  double abs_x0 = abs(x0);
+  
+  return exp(-(x-x0)/abs_x0);
+
 }
