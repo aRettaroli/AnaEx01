@@ -1,10 +1,68 @@
 #include <iostream>
 #include <TFile.h>
+#include <TTree.h>
+#include <TH2D.h>
+#include <TH1D.h>
+#include <TDirectoryFile.h>
+#include <string>
+#include <TCanvas.h>
+#include <TMath.h>
+#include <TRandom.h>
+#include <TApplication.h>
 using namespace std;
 
 int main() {
+
+  cout << "hello world" << endl;
   
   TFile* myf = new TFile("../build/CloudChamber.root","r");
+  TDirectoryFile* dir = (TDirectoryFile*)myf->Get("ntuple");
+
+  TH2D* edep = new TH2D("EvsY","Edep vs Y coord",40,-200.,200.,40,0.,0.03); //E in MeV, Y in mm
+ 
+  int nEvt = 100;
+  TTree* tree;
+  double x, y, z, E, S;
+  
+  for(int j=0; j<nEvt; j++) {
+  
+    string s = "Ntuple"+to_string(j);
+    
+    tree = (TTree*)dir->Get(s.c_str());
+    
+    //now reading each leaf
+    tree->SetBranchAddress("Xpos",&x);
+    tree->SetBranchAddress("Ypos",&y);
+    tree->SetBranchAddress("Zpos",&z);
+    tree->SetBranchAddress("Estep",&E);
+    tree->SetBranchAddress("StepSize",&S);
+    
+    int nentries = tree->GetEntries();
+    double E_new = 0.;
+    
+    for (int i=0; i<nentries; i++) {
+      tree->GetEntry(i);
+      double y0 = -200.; //mm
+      E_new = E*TMath::Exp(-(y-y0)/TMath::Abs(y0));
+      edep->Fill(y,E_new);
+     
+    }
+
+  }
+  
+  TApplication *myapp=new TApplication("myapp",0,0);
+   
+  TCanvas *cc = new TCanvas("cc","s",700,700);
+  edep->Draw("lego");
+//  cc->SaveAs("prova.png");
+  myapp->Run();
+  
+  myf->Close();
+  
+//###############################
+
+  delete myf;
+//  delete edep;
 
   return 0;
 }

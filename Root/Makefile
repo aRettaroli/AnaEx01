@@ -9,8 +9,11 @@ ROOTCFLAGS 	= $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS	= $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS	= $(shell $(ROOTSYS)/bin/root-config --glibs)
 
-LIBS		= $(ROOTLIBS) $(ROOTGLIBS)
-FLAGS		+= $(CXXFLAGS) $(ROOTFLAGS)
+LIBS		= $(ROOTLIBS)
+LIBS		+= $(ROOTGLIBS)
+
+FLAGS		= $(CXXFLAGS)
+FLAGS		+= $(ROOTFLAGS)
 
 #include directories
 INCLUDE		= -I./ -I$(ROOTSYS)/include
@@ -23,7 +26,7 @@ default_target: main
 
 #compiling rule
 main: CloudChamber.C
-	g++ $(FLAGS) $(LIBS) $(INCLUDE) -o mainChamb CloudChamber.C
+	g++ $(FLAGS) $(INCLUDE) CloudChamber.C $(LIBS) -o mainChamb 
 
 
 #clean rule
