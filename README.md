@@ -101,7 +101,7 @@
  
  ## How to build ## 
 
- mkdir <build dir>
- cd <build dir>
+ mkdir build_dir
+ cd build_dir
  cmake ../
- make -j<Nprocessors>
+ make -j Nprocessors
