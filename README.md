@@ -22,13 +22,13 @@
 	
 ## Detector description ##
  
- The chamber is a 40cmx40cmx80cm parallelepiped made of a supersaturated gas. This can be either
- water vapour or alcohol.
+ The chamber is a 40cmx40cmx80cm parallelepiped made of a supersaturated gas.
+ This can be either water vapour or alcohol. In this case is set to 2-propanol.
  	
  Two parameters define the calorimeter :
     * the material of vapour,
-    * the height in the y direction (the x height is equal to that of y, and the dimension
-      in the z direction is fixed at 80cm). 
+    * the height in the y direction (the x height is equal to that of y, and the
+      dimension in the z direction is fixed at 80cm). 
  
  The default geometry is constructed in DetectorConstruction class,
  but all of the above parameters can be modified interactively via
@@ -72,24 +72,32 @@
 
  ## Histograms ##
 
- ClouChamber can produce 4 histograms : //(CAMBIARE)
+ CloudChamber can produce 2 histograms :
   
   Edep : total energy deposit in the chamber per event	  
   Ltrack : total track length of charged particles in the chamber per event
  
- And 2 Ntuples : //(CAMBIARE)
- * Ntuple1:
-   ..* one row per event : EnergyAbs EnergyGap
- * Ntuple2:
-   ..* one row per event : TrackLAbs TrackLGap
+ And n+1 Ntuples, where n is the number of events generated :
+ * NtupleE : contains Edep and Ltrack leafs, corresponding to the
+             two histograms.
+ * Ntuple(i): one Ntuple per event. Leafs are X,Y,Z (hit coordinates
+              Of each step), Edep of each step, and StepSize of each step.
+
   
  These histos and ntuples are booked in HistoManager and filled from 
- EventAction.
+ EventAction and SteppingAction.
  
  One can control the name of the histograms file and its format:
  default name     : CloudChamber   
  The format of the histogram file can be : root (default),
  xml, csv. Include correct g4nnn.hh in HistoManager.hh 
+
+ ## Root directory ##
+ 
+ Here an offline analysis can be done. Currently there is a macro that loops
+ over all Ntuple(i) data and makes Edep vs Y coordinate graph.
+ Energy deposit and hit probability are weighted with exponential functions
+ from the bottom of the chamber to the top.
  
  ## How to build ## 
 
