@@ -14,6 +14,7 @@ LIBS		+= $(ROOTGLIBS)
 
 FLAGS		= $(CXXFLAGS)
 FLAGS		+= $(ROOTFLAGS)
+FLAGS		+= -std=c++11
 
 #include directories
 INCLUDE		= -I./ -I$(ROOTSYS)/include

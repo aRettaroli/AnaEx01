@@ -14,6 +14,7 @@
 using namespace std;
 
 double mydist(double,double);
+double fRand(double,double);
 
 
 int main() {
@@ -46,11 +47,12 @@ int main() {
     double E_new = 0.;
     
     for (int i=0; i<nentries; i++) {
+		
       tree->GetEntry(i);
       double y0 = -200.; //mm
       E_new = E*TMath::Exp(-(y-y0)/TMath::Abs(y0));
       
-      double r = (double)rand()/RAND_MAX;
+	  double r = fRand(exp(-2.),1.);
       double myrandom = mydist(y,y0);
       
       if(r<myrandom) { edep->Fill(y,E_new); }
@@ -73,6 +75,7 @@ int main() {
 
   delete myf;
 //  delete edep;
+  delete myapp;
 
   return 0;
 }
@@ -85,4 +88,11 @@ double mydist(double x, double x0) {
   
   return exp(-(x-x0)/abs_x0);
 
+}
+
+//generate random numbers between two doubles
+double fRand(double fMin, double fMax)
+{
+	double f = (double)rand() / RAND_MAX;
+	return fMin + f * (fMax - fMin);
 }
