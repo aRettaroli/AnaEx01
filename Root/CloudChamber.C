@@ -7,18 +7,16 @@
 #include <string>
 #include <TCanvas.h>
 #include <TMath.h>
-#include <TRandom.h>
 #include <TApplication.h>
 #include <cstdlib>
 #include <cmath>
+#include <TGraph.h>
 using namespace std;
 
 double mydist(double,double);
 
 
 int main() {
-
-  cout << "hello world" << endl;
   
   TFile* myf = new TFile("../build/CloudChamber.root","r");
   TDirectoryFile* dir = (TDirectoryFile*)myf->Get("ntuple");
@@ -61,14 +59,31 @@ int main() {
   
   TApplication *myapp=new TApplication("myapp",0,0);
    
-  TCanvas *cc = new TCanvas("cc","s",700,700);
+  TCanvas *c1 = new TCanvas("c1","edep",700,700);
   edep->Draw("lego");
 //  cc->SaveAs("prova.png");
-  myapp->Run();
   
+  
+//###############################
+
+  double Eprim;
+  TTree* pe = (TTree*)dir->Get("PrimaryE");
+  pe->SetBranchAddress("PrimE",&Eprim);
+  int n1 = pe->GetEntries();
+  
+  double Egas;
+  TTree* egas = (TTree*)dir->Get("NtupleE");
+  egas->SetBranchAddress("Egas",&Egas);
+  int n2 = egas->GetEntries();
+  
+  TGraph* gr = new TGraph();
+  
+  
+  TCanvas* c2 = new TCanvas("c2","eff",700,700);
+
+  myapp->Run();  
   myf->Close();
-  
-  
+
 //###############################
 
   delete myf;
