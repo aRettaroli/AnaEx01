@@ -80,8 +80,16 @@ int main() {
   
   TGraph* gr = new TGraph();
   
+  for(int i=0; i<n1; i++) {
+    
+    pe->GetEntry(i);
+    egas->GetEntry(i);
+    gr->SetPoint(i, Eprim, Egas/Eprim);
+  }
   
   TCanvas* c2 = new TCanvas("c2","eff",700,700);
+  gr->SetMarkerStyle(21);
+  gr->Draw("ap");
 
   myapp->Run();
   myf->Close();

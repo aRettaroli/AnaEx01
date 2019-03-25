@@ -19,7 +19,7 @@ FLAGS		+= -std=c++11
 #include directories
 INCLUDE		= -I./ -I$(ROOTSYS)/include
 
-#-------------------------------------------------------
+#---------------------------------------------------
 #default target
 default_target: main
 .PHONY: default_target
