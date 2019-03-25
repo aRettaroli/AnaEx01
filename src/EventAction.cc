@@ -52,6 +52,7 @@ EventAction::EventAction(RunAction* run, HistoManager* histo)
 // fTrackLAbs(0.), fTrackLGap(0.),
  fEnergyGas(0.),
  fTrackLGas(0.),
+ fPrimaryEnergy(0.),
  fPrintModulo(0),
  fEvtID(0)                  
 {
@@ -74,7 +75,12 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 // fTrackLAbs = fTrackLGap = 0.;
  fTrackLGas = 0.;
 
-//create Ntuple for each event (id = evtID + 1 )
+  //record primary energy of the event
+  G4PrimaryVertex* primaryVertex = evt->GetPrimaryVertex();
+  G4PrimaryParticle* primaryParticle = primaryVertex->GetPrimary();
+  fPrimaryEnergy = primaryParticle->GetKineticEnergy();
+
+//create Ntuple for each event (id = evtID + 2 )
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   std::string evtIDstring = std::to_string(fEvtID);
   analysisManager->CreateNtuple("Ntuple"+evtIDstring, "Evt"+evtIDstring);
@@ -104,11 +110,12 @@ void EventAction::EndOfEventAction(const G4Event*)
 //  fHistoManager->FillHisto(3, fTrackLGap);
   fHistoManager->FillHisto(0, fEnergyGas);
   fHistoManager->FillHisto(1, fTrackLGas);
+  fHistoManager->FillHisto(2, fPrimaryEnergy);
   
   //fill ntuple
   //
 //  fHistoManager->FillNtuple(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
-  fHistoManager->FillNtuple(fEnergyGas, fTrackLGas);
+  fHistoManager->FillNtuple(fEnergyGas, fTrackLGas, fPrimaryEnergy);
 
 
 }  

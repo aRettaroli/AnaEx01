@@ -90,6 +90,8 @@ void HistoManager::Book()
 //  analysisManager->CreateH1("LGap","trackL in gap (mm)", 100, 0., 50*cm);
   analysisManager->CreateH1("LGas","trackL in chamber (mm)", 50, 0., 1*m);
 
+  analysisManager->CreateH1("EPrimary","Energy of Primaries (MeV)", 50, 0., 80*GeV);
+
   // Create ntuples.
   // Ntuples ids are generated automatically starting from 0.
   // The start value can be changed by:
@@ -103,11 +105,9 @@ void HistoManager::Book()
   analysisManager->FinishNtuple();
 
   // Create 2nd ntuple (id = 1)
-  //    
-//  analysisManager->CreateNtuple("Ntuple2", "TrackL");
-//  analysisManager->CreateNtupleDColumn("Lgas"); // column Id = 0
-//  analysisManager->CreateNtupleDColumn("Lgap"); // column Id = 1
-//  analysisManager->FinishNtuple();
+  analysisManager->CreateNtuple("PrimaryE", "PrimaryE");
+  analysisManager->CreateNtupleDColumn("PrimE"); // column Id = 0
+  analysisManager->FinishNtuple();
 
   
   fFactoryOn = true;       
@@ -173,7 +173,7 @@ void HistoManager::Normalize(G4int ih, G4double fac)
 //  analysisManager->FillNtupleDColumn(1, 1, trackLGap);
 //  analysisManager->AddNtupleRow(1);  
 //}  
-void HistoManager::FillNtuple(G4double energydep, G4double tracklen)
+void HistoManager::FillNtuple(G4double energydep, G4double tracklen, G4double primaryenergy)
 {
   if(!fEnabled)
     return;
@@ -183,8 +183,8 @@ void HistoManager::FillNtuple(G4double energydep, G4double tracklen)
   analysisManager->FillNtupleDColumn(0, 1, tracklen);
   analysisManager->AddNtupleRow(0);  
   // Fill 2nd ntuple ( id = 1)
-//  analysisManager->FillNtupleDColumn(1, 0, tracklen);
-//  analysisManager->AddNtupleRow(1);  
+  analysisManager->FillNtupleDColumn(1, 0, primaryenergy);
+  analysisManager->AddNtupleRow(1);  
 }
 
 void HistoManager::FillNtupleEachStep(G4int evtid, G4double xposition, G4double yposition, G4double zposition, G4double energyStep, G4double stepsize)
@@ -192,13 +192,13 @@ void HistoManager::FillNtupleEachStep(G4int evtid, G4double xposition, G4double 
   if(!fEnabled)
     return;
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  // Fill ntuples  ( id = evtID + 1 )
-  analysisManager->FillNtupleDColumn(evtid+1, 0, xposition);
-  analysisManager->FillNtupleDColumn(evtid+1, 1, yposition);
-  analysisManager->FillNtupleDColumn(evtid+1, 2, zposition);
-  analysisManager->FillNtupleDColumn(evtid+1, 3, energyStep);
-  analysisManager->FillNtupleDColumn(evtid+1, 4, stepsize);
-  analysisManager->AddNtupleRow(evtid+1);   
+  // Fill ntuples  ( id = evtID + 2 )
+  analysisManager->FillNtupleDColumn(evtid+2, 0, xposition);
+  analysisManager->FillNtupleDColumn(evtid+2, 1, yposition);
+  analysisManager->FillNtupleDColumn(evtid+2, 2, zposition);
+  analysisManager->FillNtupleDColumn(evtid+2, 3, energyStep);
+  analysisManager->FillNtupleDColumn(evtid+2, 4, stepsize);
+  analysisManager->AddNtupleRow(evtid+2);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

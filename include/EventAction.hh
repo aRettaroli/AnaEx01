@@ -67,6 +67,7 @@ private:
 //   G4double  fEnergyAbs, fEnergyGap;
 //   G4double  fTrackLAbs, fTrackLGap;
    G4double fEnergyGas, fTrackLGas;
+   G4double fPrimaryEnergy;
                      
    G4int fEvtID;
    G4int     fPrintModulo;                             
